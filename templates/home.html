@@ -56,7 +56,20 @@
                 <ul>
                     {% for post in followed_posts %}
                     <li class="col-sm-12">
-                        <h2>{{ post.title }}</h2>
+                        <h2>
+                            {%if current_blog in post.read_by.all%}
+                                <label post-id="{{post.id}}" class="unread btn btn-default active" >
+                                    <input type="checkbox" checked>
+                                    Read
+                                </label>
+                                {%else%}
+                                <label post-id="{{post.id}}" class="read btn btn-default">
+                                    <input type="checkbox">
+                                    Read
+                                </label>
+                                {%endif%}
+                            {{ post.title }}
+                        </h2>
                         <h3>{{ post.text }}</h3>
                         <p>{{ post.pub_date }}</p>
                     </li>
@@ -149,6 +162,38 @@
                     success: function (data) {
                         $('#unfollow_'+blog_id).hide("slow");
                         $('#unfollowed_blog_'+blog_id).show("slow");
+                        }
+                });
+        });
+    $('.read').click(
+        function(e){
+            var post_id = $(this).attr('post-id');
+            var self = this
+            $.ajax(
+                {
+                    url: "api/checkbox/",
+                    method: 'GET',
+                    data:{
+                        read_post_id: post_id
+                    },
+                    success: function (data) {
+                        $(self).attr("class", "unread btn btn-default active")
+                        }
+                });
+        });
+    $('.unread').click(
+        function(e){
+            var post_id = $(this).attr('post-id');
+            var self = this
+            $.ajax(
+                {
+                    url: "api/checkbox/",
+                    method: 'GET',
+                    data:{
+                        unread_post_id: post_id
+                    },
+                    success: function (data) {
+                        $(self).attr("class", "read btn btn-default")
                         }
                 });
         });

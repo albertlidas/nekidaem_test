@@ -42,4 +42,24 @@ class FollowBlogAPI(View):
         if unfollow_blog_id:
             blog = get_object_or_404(Blog, pk=unfollow_blog_id)
             blog.unfollow_blog(current_blog.author)
+            related_blog_posts = Post.objects.all().filter(read_by=current_blog)
+            for post in related_blog_posts:
+                post.unread_post(current_blog)
+            return HttpResponse(status=200)
+
+
+class CheckboxAPI(View):
+
+    def get(self, request):
+        current_blog = get_object_or_404(Blog, author=request.user)
+
+        read_post_id = request.GET.get('read_post_id')
+        unread_post_id = request.GET.get('unread_post_id')
+        if read_post_id:
+            post = get_object_or_404(Post, pk=read_post_id)
+            post.read_post(current_blog)
+            return HttpResponse(status=200)
+        if unread_post_id:
+            post = get_object_or_404(Post, pk=unread_post_id)
+            post.unread_post(current_blog)
             return HttpResponse(status=200)

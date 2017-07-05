@@ -35,6 +35,13 @@ class Post(models.Model):
         validators=[MaxLengthValidator(2000)]
     )
     pub_date = models.DateTimeField(auto_now_add=True)
+    read_by = models.ManyToManyField(to=Blog, related_name="read_by", blank=True)
 
     def __str__(self):
         return "{}".format(self.title)
+
+    def read_post(self, user):
+        self.read_by.add(user)
+
+    def unread_post(self, user):
+        self.read_by.remove(user)
