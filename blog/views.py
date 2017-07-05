@@ -1,7 +1,10 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.views.generic import View
 from django.views.generic.base import TemplateView
+
 from .models import Blog, Post
-# Create your views here.
 
 
 class HomePageView(TemplateView):
@@ -23,3 +26,20 @@ class HomePageView(TemplateView):
         else:
             context['login_please'] = True
             return context
+
+
+class FollowBlogAPI(View):
+
+    def get(self, request):
+        current_blog = get_object_or_404(Blog, author=request.user)
+
+        follow_blog_id = request.GET.get('follow_blog_id')
+        unfollow_blog_id = request.GET.get('unfollow_blog_id')
+        if follow_blog_id:
+            blog = get_object_or_404(Blog, pk=follow_blog_id)
+            blog.follow_blog(current_blog.author)
+            return HttpResponse(status=200)
+        if unfollow_blog_id:
+            blog = get_object_or_404(Blog, pk=unfollow_blog_id)
+            blog.unfollow_blog(current_blog.author)
+            return HttpResponse(status=200)

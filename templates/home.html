@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,93 +8,153 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
 
-  </head>
-  <body>
-  {%if login_please%}
-  <h3>If you see this string, please do next:</h3>
+</head>
+<body>
+{%if login_please%}
+<h3>If you see this string, please do next:</h3>
 <ul>
     <li>Login on admin page.</li>
     <li>Create your blog.</li>
 </ul>
 
 {%else%}
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
+<!-- Fixed navbar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
         <div class="navbar-header">
 
-          <a class="navbar-brand" href="#">Hello, {{current_blog}}</a>
+            <a class="navbar-brand" href="#">Hello, {{current_blog}}</a>
         </div>
-      </div>
-    </nav>
+    </div>
+</nav>
 <div class="container">
     <div class="jumbotron">
-        <h1><center>NeKidaem Test</center></h1>
+        <h1>
+            <center>NeKidaem Test</center>
+        </h1>
     </div>
 
-        <div class="row">
-            <div class="col-md-8">
-                <div><h2>Followed blog posts</h2></div>
+    <div class="row">
+        <div class="col-md-8">
+            <div><h2>Followed blog posts</h2></div>
 
-                <div class="pre-scrollable">
-                    <ul>
-                        {% for post in followed_posts %}
-                        <li class="col-sm-12">
-                            <h2>{{ post.title }}</h2>
-                            <h3>{{ post.text }}</h3>
-                            <p>{{ post.pub_date }}</p>
-                        </li>
-                        {% empty %}
-                        <h4>No posts here</h4>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div><h2>Followed BLOGS</h2></div>
-                <div class="pre-scrollable">
-
-                    <ul>
-                        {% for blog in followers %}
-                        <li class="col-sm-12">
-                            <h3>{{ blog.author }}</h3>
-                        </li>
-                        {% empty %}
-                        <h4>
-                            No blogs here
-                        </h4>
-                        {% endfor %}
-                    </ul>
-                </div>
-
-                <div><h2>Other Blogs</h2></div>
-                <div class="pre-scrollable">
-                    {% for blog in blogs %}
+            <div class="pre-scrollable">
+                <ul>
+                    {% for post in followed_posts %}
                     <li class="col-sm-12">
-                        <h3>{{ blog.author }}</h3>
+                        <h2>{{ post.title }}</h2>
+                        <h3>{{ post.text }}</h3>
+                        <p>{{ post.pub_date }}</p>
+                    </li>
+                    {% empty %}
+                    <h4>No posts here</h4>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div><h2>Followed BLOGS</h2></div>
+            <div class="pre-scrollable">
+
+                <ul>
+                    {% for blog in followers %}
+                    <li class="col-sm-12">
+                        <p>{{ blog.author }}<a id="unfollow_{{ blog.id }}"
+                                               class="unfollow pull-right btn btn-sm btn-warning"
+                                               blog-id="{{ blog.id }}">
+                            unfollow
+                        </a></p>
+
+
+                        <pre style="display: none;" id="unfollowed_blog_{{ blog.id }}"
+                             class="text-center">Unfollowed</pre>
                     </li>
                     {% empty %}
                     <h4>
                         No blogs here
                     </h4>
                     {% endfor %}
-                    {%endif%}
-                </div>
-                </div>
+                </ul>
+            </div>
+
+            <div><h2>Other Blogs</h2></div>
+            <div class="pre-scrollable">
+                <ul>
+                    {% for blog in blogs %}
+                    <li class="col-sm-12">
+                        <p>{{ blog.author }}<a id="follow_{{ blog.id }}"
+                                               class="follow pull-right btn btn-sm btn-success"
+                                               blog-id="{{ blog.id }}">
+                            follow
+                        </a></p>
+                        <pre style="display: none;" id="followed_blog_{{ blog.id }}" class="text-center">Followed</pre>
+                    </li>
+                </ul>
+                {% empty %}
+                <h4>
+                    No blogs here
+                </h4>
+                {% endfor %}
+                {%endif%}
             </div>
         </div>
+    </div>
+</div>
 
 </div>
-  </body>
+<script>
+    $(document).ready(function (e) {
+    $('.follow').click(
+        function(e){
+            var blog_id = $(this).attr('blog-id');
+            $.ajax(
+                {
+                    url: "api/follow/",
+                    method: 'GET',
+                    data:{
+                        follow_blog_id: blog_id
+                    },
+                    success: function (data) {
+                        $('#follow_'+blog_id).hide("slow");
+                        $('#followed_blog_'+blog_id).show("slow");
+                        }
+                });
+        });
+    $('.unfollow').click(
+        function(e){
+            var blog_id = $(this).attr('blog-id');
+            console.log(blog_id);
+            $.ajax(
+                {
+                    url: "api/follow/",
+                    method: 'GET',
+                    data:{
+                        unfollow_blog_id: blog_id
+                    },
+                    success: function (data) {
+                        $('#unfollow_'+blog_id).hide("slow");
+                        $('#unfollowed_blog_'+blog_id).show("slow");
+                        }
+                });
+        });
+});
+
+</script>
+
+</body>
 </html>

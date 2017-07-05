@@ -22,10 +22,10 @@ class Blog(models.Model):
         return "{}".format(self.author.username)
 
     def follow_blog(self, user):
-        self.followed.add(user)
+        self.followers.add(user)
 
     def unfollow_blog(self, user):
-        self.followed.remove(user)
+        self.followers.remove(user)
 
 
 class Post(models.Model):
