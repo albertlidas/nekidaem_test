@@ -45,3 +45,20 @@ class Post(models.Model):
 
     def unread_post(self, user):
         self.read_by.remove(user)
+
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.core.mail import send_mass_mail
+
+
+@receiver(post_save, sender=Post)
+def send_notification(instance, **kwargs):
+    if kwargs['created']:
+        followers = instance.blog.followers.all()
+        emails = [blog.email for blog in followers]
+
+        from_email = "test@gmail.com"
+        email_body = "http://link_for_post.com"
+        mail_tuple = ("New post in followed posts", email_body, from_email,  emails)
+        send_mass_mail((mail_tuple,))
