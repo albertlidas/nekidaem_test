@@ -9,7 +9,7 @@ class Blog(models.Model):
         verbose_name="user",
         to=User, on_delete=models.CASCADE
     )
-    followed = models.ManyToManyField(
+    followers = models.ManyToManyField(
         verbose_name="followers",
         to=User, related_name="followers", blank=True
     )
